@@ -11,7 +11,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-// import MenuItem from "@mui/material/MenuItem";
 import NativeSelect from "@mui/material/NativeSelect";
 import Grid from "@mui/material/Grid";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
@@ -38,11 +37,23 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // User Details
+  const [ageValue, setAgeValue] = React.useState("");
   const [msValue, setMsValue] = React.useState("");
   const [occupation, setOccupation] = React.useState("");
   const [miValue, setMiValue] = React.useState("");
+
+  // User Preferences
   const [ecValue, setecValue] = React.useState("");
-  const [ageValue, setAgeValue] = React.useState("");
+  const [tsValue, settsValue] = React.useState("");
+  const [mrcValue, setmrcValue] = React.useState("");
+  const [epoValue, setepoValue] = React.useState("");
+  const [modValue, setmodValue] = React.useState("");
+  const [gfqValue, setgfqValue] = React.useState("");
+  const [gtsValue, setgtsValue] = React.useState("");
+  const [mwtValue, setmwtValue] = React.useState("");
+  const [ncValue, setncValue] = React.useState("");
+  const [delayValue, setdelayValue] = React.useState("");
 
   const clear = () => {
     setAgeValue("");
@@ -50,10 +61,24 @@ export default function Home() {
     setOccupation("");
     setMiValue("");
     setecValue("");
+    settsValue("");
+    setmrcValue("");
+    setepoValue("");
+    setmodValue("");
+    setgfqValue("");
+    setgtsValue("");
+    setmwtValue("");
+    setncValue("");
+    setdelayValue("");
   };
 
   return (
-    <Box sx={{ flexGrow: 1, bgcolor: "#efefef" }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        backgroundImage: `url(${"/bg.png"})`,
+      }}
+    >
       <AppBar position="sticky" sx={{ bgcolor: "#f02b2a" }}>
         <Toolbar>
           <DeliveryDiningIcon fontSize="large" />
@@ -122,21 +147,21 @@ export default function Home() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          p: 1,
-          m: 1,
+          p: 2,
+          mt: 1,
           borderRadius: 1,
         }}
       >
         <Card sx={{ minWidth: "200px", maxWidth: "700px" }}>
           <CardMedia
             component="img"
-            height="350"
+            height="400"
             image="https://www.jotform.com/blog/wp-content/uploads/2020/05/How-to-start-a-food-delivery-business.png"
             alt="food delivery guy"
             sx={{ objectFit: "fill" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography gutterBottom variant="h4" component="div">
               Predict Re-ordering
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
@@ -145,233 +170,89 @@ export default function Home() {
             <form>
               <Divider>User Details</Divider>
               <Grid container spacing={2} sx={{ my: 1 }}>
-                <Grid item xs={6} md={4}>
+                <Grid
+                  item
+                  xs={6}
+                  md={4}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
                   <TextField
                     id="age"
                     label="Age"
-                    variant="outlined"
+                    variant="standard"
                     sx={{ width: 180 }}
                     value={ageValue}
                     onChange={(e) => setAgeValue(e.target.value)}
                   />
                 </Grid>
-                <Grid item xs={6} md={4}>
+                <Grid
+                  item
+                  xs={6}
+                  md={4}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
                   <FormControl sx={{ width: 180 }}>
                     <InputLabel id="ms">Marital Status</InputLabel>
                     <NativeSelect
-                      labelId="ms"
+                      labelid="ms"
                       label="Marital Status"
                       value={msValue}
                       onChange={(e) => setMsValue(e.target.value)}
                     >
                       <option value=""></option>
-                      <option value={10}>Married</option>
-                      <option value={20}>Single (Hinge?)</option>
+                      <option value={"Married"}>Married</option>
+                      <option value={"Single"}>Single (Hinge?)</option>
                     </NativeSelect>
                   </FormControl>
                 </Grid>
-                <Grid item xs={6} md={4}>
+                <Grid
+                  item
+                  xs={6}
+                  md={4}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
                   <FormControl sx={{ width: 180 }}>
                     <InputLabel id="occ">Occupation</InputLabel>
                     <NativeSelect
-                      labelId="occ"
+                      labelid="occ"
                       label="Occupation"
                       value={occupation}
                       onChange={(e) => setOccupation(e.target.value)}
                     >
                       <option value=""></option>
-                      <option value={1}>Employee</option>
-                      <option value={2}>Self-Employeed</option>
-                      <option value={3}>Student</option>
-                      <option value={5}>House-wife</option>
+                      <option value={"Emp"}>Employee</option>
+                      <option value={"SM"}>Self-Employeed</option>
+                      <option value={"Stu"}>Student</option>
+                      <option value={"HW"}>House-wife</option>
                     </NativeSelect>
                   </FormControl>
                 </Grid>
-                <Grid item xs={6} md={4}>
+                <Grid
+                  item
+                  xs={6}
+                  md={4}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
                   <FormControl sx={{ width: 180 }}>
                     <InputLabel id="mi">Monthly Income</InputLabel>
                     <NativeSelect
-                      labelId="mi"
+                      labelid="mi"
                       label="Monthly Income"
                       value={miValue}
                       onChange={(e) => setMiValue(e.target.value)}
                     >
                       <option value=""></option>
-                      <option value={10}>No Income</option>
-                      <option value={20}>Below Rs. 10,000</option>
-                      <option value={20}>More than Rs. 5,000</option>
+                      <option value={"1"}>No Income</option>
+                      <option value={"2"}>Below Rs. 10,000</option>
+                      <option value={"3"}>10,001 to 25,000</option>
+                      <option value={"4"}> 25,001 to 50,000</option>
+                      <option value={"5"}>More than Rs. 50,000</option>
                     </NativeSelect>
                   </FormControl>
                 </Grid>
               </Grid>
               <Divider>User Preference</Divider>
-              {/* Second Row 
-              <Grid container spacing={2} sx={{ my: 1 }}>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="ec">Ease and convenient</InputLabel>
-                    <NativeSelect
-                      labelId="ec"
-                      label="Ease and convenient"
-                      value={eCValue}
-                      onChange={(e) => seteCValue(e.target.value)}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="ts">Time Saving</InputLabel>
-                    <NativeSelect
-                      labelId="ts"
-                      label="Time Saving"
-                      value={null}
-                      onChange={null}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="mrc">More restaurant choices</InputLabel>
-                    <NativeSelect
-                      labelId="mrc"
-                      label="More restaurant choices"
-                      value={miValue}
-                      onChange={(e) => setMiValue(e.target.value)}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="epo">Easy Payment option</InputLabel>
-                    <NativeSelect
-                      labelId="epo"
-                      label="Easy Payment option"
-                      value={eCValue}
-                      onChange={(e) => seteCValue(e.target.value)}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="mod">More Offers and Discount </InputLabel>
-                    <NativeSelect
-                      labelId="mod"
-                      label="More Offers and Discount"
-                      value={null}
-                      onChange={null}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="gfq">Good Food quality</InputLabel>
-                    <NativeSelect
-                      labelId="gfq"
-                      label="Good Food quality"
-                      value={null}
-                      onChange={null}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="gts">Good Tracking system</InputLabel>
-                    <NativeSelect
-                      labelId="gts"
-                      label="Good Tracking system"
-                      value={eCValue}
-                      onChange={(e) => seteCValue(e.target.value)}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="delay">
-                      Delay of delivery person getting assigned
-                    </InputLabel>
-                    <NativeSelect
-                      labelId="delay"
-                      label="Delay of delivery person getting assigned"
-                      value={null}
-                      onChange={null}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="mwt">Maximum wait time</InputLabel>
-                    <NativeSelect
-                      labelId="mwt"
-                      label="Maximum wait time"
-                      value={null}
-                      onChange={null}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <FormControl sx={{ width: 180 }}>
-                    <InputLabel id="calls">Number of calls</InputLabel>
-                    <NativeSelect
-                      labelId="calls"
-                      label="Number of calls"
-                      value={null}
-                      onChange={null}
-                    >
-                      <option value=""></option>
-                      <option value={10}>Agree</option>
-                      <option value={20}>Disagree</option>
-                      <option value={20}>Neutral</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-              </Grid>
-      */}
-              <Grid container spacing={2} sx={{ my: 1 }}>
+              <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid item xs={12} md={12}>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -390,21 +271,253 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={10}
-                              checked={ecValue === 10}
+                              value={"1"}
+                              checked={ecValue === "1"}
                               onChange={(e) => setecValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              checked={ecValue === 20}
+                              value={"2"}
+                              checked={ecValue === "2"}
                               onChange={(e) => setecValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              checked={ecValue === 20}
+                              value={"3"}
+                              checked={ecValue === "3"}
                               onChange={(e) => setecValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">Time Saving</TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={tsValue === "1"}
+                              onChange={(e) => settsValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={tsValue === "2"}
+                              onChange={(e) => settsValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={tsValue === "3"}
+                              onChange={(e) => settsValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            More restaurant choices
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={mrcValue === "1"}
+                              onChange={(e) => setmrcValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={mrcValue === "2"}
+                              onChange={(e) => setmrcValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={mrcValue === "3"}
+                              onChange={(e) => setmrcValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            Easy Payment option
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={epoValue === "1"}
+                              onChange={(e) => setepoValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={epoValue === "2"}
+                              onChange={(e) => setepoValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={epoValue === "3"}
+                              onChange={(e) => setepoValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            More Offers and Discount
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={modValue === "1"}
+                              onChange={(e) => setmodValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={modValue === "2"}
+                              onChange={(e) => setmodValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={modValue === "3"}
+                              onChange={(e) => setmodValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            Good Food quality
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={gfqValue === "1"}
+                              onChange={(e) => setgfqValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={gfqValue === "2"}
+                              onChange={(e) => setgfqValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={gfqValue === "3"}
+                              onChange={(e) => setgfqValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            Good Tracking system
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={gtsValue === "1"}
+                              onChange={(e) => setgtsValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={gtsValue === "2"}
+                              onChange={(e) => setgtsValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={gtsValue === "3"}
+                              onChange={(e) => setgtsValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            Maximum wait time
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={mwtValue === "1"}
+                              onChange={(e) => setmwtValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={mwtValue === "2"}
+                              onChange={(e) => setmwtValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={mwtValue === "3"}
+                              onChange={(e) => setmwtValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">Number of calls</TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={ncValue === "1"}
+                              onChange={(e) => setncValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={ncValue === "2"}
+                              onChange={(e) => setncValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={ncValue === "3"}
+                              onChange={(e) => setncValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">
+                            Delay of delivery person getting assigned
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={delayValue === "1"}
+                              onChange={(e) => setdelayValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={delayValue === "2"}
+                              onChange={(e) => setdelayValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"3"}
+                              checked={delayValue === "3"}
+                              onChange={(e) => setdelayValue(e.target.value)}
                             />
                           </TableCell>
                         </TableRow>
@@ -425,7 +538,7 @@ export default function Home() {
               Clear
             </Button>
             <Button variant="contained" sx={{ marginLeft: "auto" }}>
-              Predict
+              🥡 Predict
             </Button>
           </CardActions>
         </Card>
