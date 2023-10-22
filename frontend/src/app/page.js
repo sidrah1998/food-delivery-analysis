@@ -31,17 +31,34 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Radio from "@mui/material/Radio";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Modal from "@mui/material/Modal";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function Home() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [showAlert, setshowAlert] = React.useState(false);
 
   // User Details
   const [ageValue, setAgeValue] = React.useState("");
   const [msValue, setMsValue] = React.useState("");
   const [occupation, setOccupation] = React.useState("");
   const [miValue, setMiValue] = React.useState("");
+  const [resValue, setresValue] = React.useState(null);
 
   // User Preferences
   const [ecValue, setecValue] = React.useState("");
@@ -54,6 +71,7 @@ export default function Home() {
   const [mwtValue, setmwtValue] = React.useState("");
   const [ncValue, setncValue] = React.useState("");
   const [delayValue, setdelayValue] = React.useState("");
+  const [politeValue, setpoliteValue] = React.useState("");
 
   const clear = () => {
     setAgeValue("");
@@ -70,6 +88,56 @@ export default function Home() {
     setmwtValue("");
     setncValue("");
     setdelayValue("");
+    setpoliteValue("");
+    setshowAlert(false);
+  };
+
+  const handleSubmit = async () => {
+    setshowAlert(false);
+    if (
+      ecValue === "" ||
+      tsValue === "" ||
+      mrcValue === "" ||
+      epoValue === "" ||
+      modValue === "" ||
+      gfqValue === "" ||
+      gtsValue === "" ||
+      mwtValue === "" ||
+      ncValue === "" ||
+      politeValue === "" ||
+      delayValue === ""
+    ) {
+      setshowAlert(true);
+      return;
+    }
+    const data = {
+      age: ageValue,
+      martial_status: msValue,
+      occupation: occupation,
+      monthly_income: miValue,
+      ease_convenient: ecValue,
+      max_wait_time: mwtValue,
+      time_saving: tsValue,
+      more_res_choices: mrcValue,
+      easy_pay_opt: epoValue,
+      more_offers_and_dis: modValue,
+      good_food_quality: gfqValue,
+      good_tracking_system: gtsValue,
+      number_calls: ncValue,
+      delay_person: delayValue,
+      politeness: politeValue,
+    };
+    const res = await fetch("http://localhost:8000/api/get-results", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const pred = await res.json();
+
+    setresValue(pred.results);
   };
 
   return (
@@ -161,6 +229,12 @@ export default function Home() {
             sx={{ objectFit: "fill" }}
           />
           <CardContent>
+            {showAlert && (
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                All fields are mandatory — <strong>check it out!</strong>
+              </Alert>
+            )}
             <Typography gutterBottom variant="h4" component="div">
               Predict Re-ordering
             </Typography>
@@ -200,8 +274,9 @@ export default function Home() {
                       onChange={(e) => setMsValue(e.target.value)}
                     >
                       <option value=""></option>
-                      <option value={"Married"}>Married</option>
-                      <option value={"Single"}>Single (Hinge?)</option>
+                      <option value={"0"}>Married</option>
+                      <option value={"1"}>Single (Hinge?)</option>
+                      <option value={"2"}>Prefer not to say</option>
                     </NativeSelect>
                   </FormControl>
                 </Grid>
@@ -220,10 +295,8 @@ export default function Home() {
                       onChange={(e) => setOccupation(e.target.value)}
                     >
                       <option value=""></option>
-                      <option value={"Emp"}>Employee</option>
-                      <option value={"SM"}>Self-Employeed</option>
-                      <option value={"Stu"}>Student</option>
-                      <option value={"HW"}>House-wife</option>
+                      <option value={"1"}>Employeed</option>
+                      <option value={"0"}>Unemployeed</option>
                     </NativeSelect>
                   </FormControl>
                 </Grid>
@@ -242,26 +315,53 @@ export default function Home() {
                       onChange={(e) => setMiValue(e.target.value)}
                     >
                       <option value=""></option>
-                      <option value={"1"}>No Income</option>
-                      <option value={"2"}>Below Rs. 10,000</option>
-                      <option value={"3"}>10,001 to 25,000</option>
-                      <option value={"4"}> 25,001 to 50,000</option>
-                      <option value={"5"}>More than Rs. 50,000</option>
+                      <option value={"1"}>Yes</option>
+                      <option value={"0"}>No</option>
                     </NativeSelect>
                   </FormControl>
                 </Grid>
               </Grid>
               <Divider>User Preference</Divider>
-              <Grid container spacing={2} sx={{ mt: 1 }}>
-                <Grid item xs={12} md={12}>
-                  <TableContainer component={Paper}>
+              <Typography gutterBottom variant="h6" component="div">
+                Will these options affect your next order?
+              </Typography>
+              <Grid
+                container
+                spacing={2}
+                sx={{ mt: 1, p: 0, display: "flex", justifyContent: "center" }}
+              >
+                <Grid
+                  item
+                  xs={6}
+                  md={4}
+                  sx={{ display: "flex", justifyContent: "center" }}
+                >
+                  <FormControl sx={{ width: 180 }}>
+                    <InputLabel id="mwt">Maximum wait time</InputLabel>
+                    <NativeSelect
+                      labelid="mwt"
+                      label="Maximum wait time"
+                      value={mwtValue}
+                      onChange={(e) => setmwtValue(e.target.value)}
+                    >
+                      <option value=""></option>
+                      <option value={"15"}>15 Mins</option>
+                      <option value={"30"}>30 Mins</option>
+                      <option value={"45"}>45 Mins</option>
+                      <option value={"60"}>60 Mins</option>
+                      <option value={"70"}>More than 60 Mins</option>
+                    </NativeSelect>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={12} sx={{ p: 0 }}>
+                  <TableContainer>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                       <TableHead>
                         <TableRow>
                           <TableCell align="center">Option</TableCell>
                           <TableCell align="center">Agree</TableCell>
-                          <TableCell align="center">Disagree</TableCell>
                           <TableCell align="center">Neutral</TableCell>
+                          <TableCell align="center">Disagree</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -278,15 +378,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={ecValue === "2"}
+                              value={"0"}
+                              checked={ecValue === "0"}
                               onChange={(e) => setecValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={ecValue === "3"}
+                              value={"2"}
+                              checked={ecValue === "2"}
                               onChange={(e) => setecValue(e.target.value)}
                             />
                           </TableCell>
@@ -302,15 +402,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={tsValue === "2"}
+                              value={"0"}
+                              checked={tsValue === "0"}
                               onChange={(e) => settsValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={tsValue === "3"}
+                              value={"2"}
+                              checked={tsValue === "2"}
                               onChange={(e) => settsValue(e.target.value)}
                             />
                           </TableCell>
@@ -328,15 +428,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={mrcValue === "2"}
+                              value={"0"}
+                              checked={mrcValue === "0"}
                               onChange={(e) => setmrcValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={mrcValue === "3"}
+                              value={"2"}
+                              checked={mrcValue === "2"}
                               onChange={(e) => setmrcValue(e.target.value)}
                             />
                           </TableCell>
@@ -354,15 +454,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={epoValue === "2"}
+                              value={"0"}
+                              checked={epoValue === "0"}
                               onChange={(e) => setepoValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={epoValue === "3"}
+                              value={"2"}
+                              checked={epoValue === "2"}
                               onChange={(e) => setepoValue(e.target.value)}
                             />
                           </TableCell>
@@ -380,15 +480,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={modValue === "2"}
+                              value={"0"}
+                              checked={modValue === "0"}
                               onChange={(e) => setmodValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={modValue === "3"}
+                              value={"2"}
+                              checked={modValue === "2"}
                               onChange={(e) => setmodValue(e.target.value)}
                             />
                           </TableCell>
@@ -406,15 +506,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={gfqValue === "2"}
+                              value={"0"}
+                              checked={gfqValue === "0"}
                               onChange={(e) => setgfqValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={gfqValue === "3"}
+                              value={"2"}
+                              checked={gfqValue === "2"}
                               onChange={(e) => setgfqValue(e.target.value)}
                             />
                           </TableCell>
@@ -432,42 +532,16 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={gtsValue === "2"}
+                              value={"0"}
+                              checked={gtsValue === "0"}
                               onChange={(e) => setgtsValue(e.target.value)}
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <Radio
-                              value={"3"}
-                              checked={gtsValue === "3"}
-                              onChange={(e) => setgtsValue(e.target.value)}
-                            />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell align="center">
-                            Maximum wait time
-                          </TableCell>
-                          <TableCell align="center">
-                            <Radio
-                              value={"1"}
-                              checked={mwtValue === "1"}
-                              onChange={(e) => setmwtValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
                               value={"2"}
-                              checked={mwtValue === "2"}
-                              onChange={(e) => setmwtValue(e.target.value)}
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <Radio
-                              value={"3"}
-                              checked={mwtValue === "3"}
-                              onChange={(e) => setmwtValue(e.target.value)}
+                              checked={gtsValue === "2"}
+                              onChange={(e) => setgtsValue(e.target.value)}
                             />
                           </TableCell>
                         </TableRow>
@@ -482,15 +556,15 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={ncValue === "2"}
+                              value={"0"}
+                              checked={ncValue === "0"}
                               onChange={(e) => setncValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={ncValue === "3"}
+                              value={"2"}
+                              checked={ncValue === "2"}
                               onChange={(e) => setncValue(e.target.value)}
                             />
                           </TableCell>
@@ -508,16 +582,40 @@ export default function Home() {
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"2"}
-                              checked={delayValue === "2"}
+                              value={"0"}
+                              checked={delayValue === "0"}
                               onChange={(e) => setdelayValue(e.target.value)}
                             />
                           </TableCell>
                           <TableCell align="center">
                             <Radio
-                              value={"3"}
-                              checked={delayValue === "3"}
+                              value={"2"}
+                              checked={delayValue === "2"}
                               onChange={(e) => setdelayValue(e.target.value)}
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell align="center">Politeness</TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"1"}
+                              checked={politeValue === "1"}
+                              onChange={(e) => setpoliteValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"0"}
+                              checked={politeValue === "0"}
+                              onChange={(e) => setpoliteValue(e.target.value)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Radio
+                              value={"2"}
+                              checked={politeValue === "2"}
+                              onChange={(e) => setpoliteValue(e.target.value)}
                             />
                           </TableCell>
                         </TableRow>
@@ -537,7 +635,11 @@ export default function Home() {
             >
               Clear
             </Button>
-            <Button variant="contained" sx={{ marginLeft: "auto" }}>
+            <Button
+              variant="contained"
+              sx={{ marginLeft: "auto" }}
+              onClick={handleSubmit}
+            >
               🥡 Predict
             </Button>
           </CardActions>
@@ -561,6 +663,24 @@ export default function Home() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Modal
+        open={resValue !== null}
+        onClose={() => setresValue(null)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Prediction Results
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            According to your inputs the person{" "}
+            <b>will {resValue === 0 ? " not " : " "}</b>
+            reorder
+          </Typography>
+        </Box>
+      </Modal>
     </Box>
   );
 }
