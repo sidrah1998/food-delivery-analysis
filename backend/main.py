@@ -33,7 +33,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-pickle_in = open("../models/model.pkl","rb")
+pickle_in = open("/code/app/model.pkl","rb")
 classifier=pickle.load(pickle_in)
 
 @app.post("/api/get-results")
