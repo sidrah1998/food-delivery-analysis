@@ -36,10 +36,6 @@ app.add_middleware(
 pickle_in = open("../models/model.pkl","rb")
 classifier=pickle.load(pickle_in)
 
-@app.get("/api/msg")
-def read_root():
-    return {"message": "Hello World"}
-
 @app.post("/api/get-results")
 async def create_item(item: FormItem):
     data = item.dict()

@@ -26,3 +26,5 @@
 
 # local env files
 /frontend/.env*.local
+# Local Netlify folder
+.netlify
