@@ -163,6 +163,16 @@ export default function Home() {
           >
             Food Delivery Analysis
           </Typography>
+          <Typography
+            sx={{
+              mx: 3,
+              letterSpacing: ".1rem",
+              color: "white",
+              textDecoration: "none",
+            }}
+          >
+            (By Sidrah Ahmed)
+          </Typography>
           <Link href="/" style={{ textDecoration: "none" }}>
             <Typography
               variant="h6"
@@ -232,7 +242,7 @@ export default function Home() {
             {showAlert && (
               <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>
-                All fields are mandatory — <strong>check it out!</strong>
+                All fields are mandatory
               </Alert>
             )}
             <Typography gutterBottom variant="h4" component="div">
@@ -275,7 +285,7 @@ export default function Home() {
                     >
                       <option value=""></option>
                       <option value={"0"}>Married</option>
-                      <option value={"1"}>Single (Hinge?)</option>
+                      <option value={"1"}>Single</option>
                       <option value={"2"}>Prefer not to say</option>
                     </NativeSelect>
                   </FormControl>
@@ -654,12 +664,12 @@ export default function Home() {
         <DialogTitle id="alert-dialog-title">{"Model Summary"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Idhar modal ka summary aayega
+            Content for model
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>
-            Got It
+            ok
           </Button>
         </DialogActions>
       </Dialog>
